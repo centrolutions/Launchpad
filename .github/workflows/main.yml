@@ -35,5 +35,5 @@ jobs:
         uses: microsoft/setup-msbuild@v1
         
       - name: Build with MSBuild
-        run: msbuild src/Launchpad.sln -p:Configuration=Release
+        run: msbuild src/LaunchpadSetup/LaunchpadSetup.vdproj -p:Configuration=Release
         
