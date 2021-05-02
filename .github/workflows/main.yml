@@ -33,6 +33,6 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Build with dotnet
-        run: dotnet build --configuration Release Launchpad.sln
+        run: dotnet build --configuration Release src/Launchpad.sln
       - name: Test it
         run: dotnet test --verbosity normal
