@@ -1,0 +1,81 @@
+﻿<Window x:Class="Launchpad.ButtonSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Launchpad"
+        xmlns:conv="clr-namespace:Launchpad.Converters"
+        xmlns:dev="clr-namespace:Launchpad.Devices"
+        xmlns:act="clr-namespace:Launchpad.Actions"
+        DataContext="{Binding Path=ButtonSettings, Source={StaticResource ViewModelLocator}}"
+        mc:Ignorable="d"
+        Title="ButtonSettings" Height="250" Width="320" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary>
+            <conv:BoolToColorConverter x:Key="boolToColor" />
+
+            <DataTemplate DataType="{x:Type act:RunProgramAction}">
+                <StackPanel Margin="5,10,5,10">
+                    <TextBlock Text="Program Path" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding ExePath, Mode=TwoWay}" MinWidth="250" MaxWidth="250" />
+                        <Button Content="..." MinWidth="40" Command="{Binding PickFileCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type act:PlaySoundAction}">
+                <StackPanel Margin="5,10,5,10">
+                    <TextBlock Text="Sound File Path" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding SoundFilePath, Mode=TwoWay}" MinWidth="250" MaxWidth="250" />
+                        <Button Content="..." MinWidth="40" Command="{Binding PickFileCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type act:KeyboardMacroAction}">
+                <StackPanel Margin="5,10,5,10">
+                    <TextBlock Text="Keybaord Codes" />
+                    <TextBox Text="{Binding Keys, Mode=TwoWay}" MaxWidth="290" />
+                    <TextBlock>
+                        <Hyperlink NavigateUri="https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys?view=netframework-4.8" RequestNavigate="Hyperlink_RequestNavigate">Find special keyboard codes here</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Color: " Margin="5,10,5,10" />
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="5,10,5,10">
+                <RadioButton Content="None" IsChecked="{Binding Path=Color, Converter={StaticResource boolToColor}, ConverterParameter={x:Static dev:ButtonColor.None}}" Margin="5,0" />
+                <RadioButton Content="Red" IsChecked="{Binding Path=Color, Converter={StaticResource boolToColor}, ConverterParameter={x:Static dev:ButtonColor.Red}}" Margin="5,0" />
+                <RadioButton Content="Green" IsChecked="{Binding Path=Color, Converter={StaticResource boolToColor}, ConverterParameter={x:Static dev:ButtonColor.Green}}" Margin="5,0" />
+                <RadioButton Content="Orange" IsChecked="{Binding Path=Color, Converter={StaticResource boolToColor}, ConverterParameter={x:Static dev:ButtonColor.Orange}}" Margin="5,0" />
+            </StackPanel>
+
+            <TextBlock Text="Action: " Grid.Row="1" />
+            <ComboBox ItemsSource="{Binding Actions}" SelectedValue="{Binding SelectedAction}" Grid.Row="1" Grid.Column="1" />
+
+            <ContentControl Content="{Binding Path=Settings.ActionWhenPressed}" Grid.Row="2" Grid.ColumnSpan="2"></ContentControl>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="5,10,5,10">
+                <Button Content="Clear Settings" MinWidth="100" Command="{Binding ClearSettingsCommand}" />
+                <Button Content="OK" x:Name="OkButton" MinWidth="100" Click="OkButton_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

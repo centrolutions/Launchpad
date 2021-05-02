@@ -1,0 +1,10 @@
+﻿<Application x:Class="Launchpad.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Launchpad"
+             xmlns:vm="clr-namespace:Launchpad.ViewModels"
+             StartupUri="LaunchpadSettings.xaml">
+    <Application.Resources>
+        <vm:ViewModelLocator x:Key="ViewModelLocator" />
+    </Application.Resources>
+</Application>
