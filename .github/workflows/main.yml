@@ -25,14 +25,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 2.2.108
-
-      # Runs a set of commands using the runners shell
-      - name: Build with dotnet
-        run: dotnet build --configuration Release src/Launchpad.sln
-      - name: Test it
-        run: dotnet test --verbosity normal
+      - name: Setup nuget.exe
+        uses: NuGet/setup-nuget@v1.0.5
+        
+      - name: Restore packages
+        run: nuget restore src\Launchpad.sln
+        
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1
+        
+      - name: Build with MSBuild
+        run: msbuild src/Launchpad.sln -p:Configuration=Release
+        
