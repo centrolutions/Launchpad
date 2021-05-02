@@ -45,8 +45,7 @@ namespace Launchpad.ViewModels
             OpenButtonSettingsFileCommand = new RelayCommand(OpenButtonSettingsFile);
             SaveButtonSettingsFileCommand = new RelayCommand(SaveButtonSettingsFile);
 
-            if (_Launchpad.DeviceAttached)
-                SetButtonColors();
+            SetButtonColors();
             _Launchpad.ButtonPressed += Launchpad_ButtonPressed;
         }
 
@@ -63,8 +62,7 @@ namespace Launchpad.ViewModels
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 _ButtonSettings.OpenSettings(filePath);
-                if (_Launchpad.DeviceAttached)
-                    _Launchpad.Reset();
+                _Launchpad.Reset();
                 ClearUIButtonColors();
                 SetButtonColors();
             }
@@ -72,8 +70,7 @@ namespace Launchpad.ViewModels
 
         private void Closing()
         {
-            if (_Launchpad.DeviceAttached)
-                _Launchpad.Reset();
+            _Launchpad.Reset();
         }
 
         private void ClearAllSettings()
@@ -84,8 +81,7 @@ namespace Launchpad.ViewModels
 
             _ButtonSettings.AllSettings.Clear();
             _ButtonSettings.SaveAllSettings();
-            if (_Launchpad.DeviceAttached)
-                _Launchpad.Reset();
+            _Launchpad.Reset();
             ClearUIButtonColors();
         }
 
@@ -166,7 +162,7 @@ namespace Launchpad.ViewModels
         {
             foreach (var setting in _ButtonSettings.AllSettings)
             {
-                LaunchpadButton button = null;
+                ILaunchpadButton button = null;
                 switch (setting.ButtonType)
                 {
                     case ButtonType.Grid:
@@ -190,11 +186,8 @@ namespace Launchpad.ViewModels
             }
         }
 
-        private void SetButtonColor(UIButtonSetting setting, LaunchpadButton button)
+        private void SetButtonColor(UIButtonSetting setting, ILaunchpadButton button)
         {
-            if (!_Launchpad.DeviceAttached)
-                return;
-
             switch (setting.Color)
             {
                 case ButtonColor.None:

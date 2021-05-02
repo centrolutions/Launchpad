@@ -110,6 +110,7 @@
     </Compile>
     <Compile Include="Converters\BoolToColorConverter.cs" />
     <Compile Include="Converters\ButtonColorConverter.cs" />
+    <Compile Include="Devices\ILaunchpadButton.cs" />
     <Compile Include="Devices\ILaunchpadDevice.cs" />
     <Compile Include="LaunchpadSettings.xaml.cs">
       <DependentUpon>LaunchpadSettings.xaml</DependentUpon>

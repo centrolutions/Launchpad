@@ -26,6 +26,7 @@ namespace Launchpad.Tests.ViewModels
             _LaunchpadDeviceMock = new Mock<ILaunchpadDevice>();
             _DialogServiceMock = new Mock<IDialogService>();
             _ButtonSettingsStoreMock = new Mock<IButtonSettingsStore>();
+            _ButtonSettingsStoreMock.Setup(x => x.AllSettings).Returns(new List<UIButtonSetting>());
 
             _Sut = new LaunchpadSettingsViewModel(_LaunchpadDeviceMock.Object, _DialogServiceMock.Object, _ButtonSettingsStoreMock.Object);
         }
@@ -149,6 +150,8 @@ namespace Launchpad.Tests.ViewModels
             var uiButton = new UIGridButton();
             var setting = new UIButtonSetting();
             _ButtonSettingsStoreMock.Setup(x => x.GetButtonSetting(ButtonType.Grid, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).Returns(setting);
+            var buttonMock = new Mock<ILaunchpadButton>();
+            _LaunchpadDeviceMock.Setup(x => x[It.IsAny<int>(), It.IsAny<int>()]).Returns(buttonMock.Object);
 
             _Sut.OpenGridButtonSettingsCommand.Execute(uiButton);
 
@@ -161,6 +164,8 @@ namespace Launchpad.Tests.ViewModels
             var uiButton = new UIToolbarButton();
             var setting = new UIButtonSetting();
             _ButtonSettingsStoreMock.Setup(x => x.GetButtonSetting(ButtonType.Toolbar, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).Returns(setting);
+            var buttonMock = new Mock<ILaunchpadButton>();
+            _LaunchpadDeviceMock.Setup(x => x.GetButton(It.IsAny<ToolbarButton>())).Returns(buttonMock.Object);
 
             _Sut.OpenToolbarButtonSettingsCommand.Execute(uiButton);
 
@@ -173,6 +178,8 @@ namespace Launchpad.Tests.ViewModels
             var uiButton = new UISidebarButton();
             var setting = new UIButtonSetting();
             _ButtonSettingsStoreMock.Setup(x => x.GetButtonSetting(ButtonType.Side, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>())).Returns(setting);
+            var buttonMock = new Mock<ILaunchpadButton>();
+            _LaunchpadDeviceMock.Setup(x => x.GetButton(It.IsAny<SideButton>())).Returns(buttonMock.Object);
 
             _Sut.OpenSidebarButtonSettingsCommand.Execute(uiButton);
 

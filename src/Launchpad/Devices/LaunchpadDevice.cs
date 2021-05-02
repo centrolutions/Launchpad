@@ -13,12 +13,12 @@ namespace Launchpad.Devices
         private bool _DoubleBuffered;
         private bool _DoubleBufferedState;
 
-        private readonly LaunchpadButton[] _Toolbar = new LaunchpadButton[8];
-        private readonly LaunchpadButton[] _Side = new LaunchpadButton[8];
-        private readonly LaunchpadButton[,] _Grid = new LaunchpadButton[8, 8];
+        private readonly ILaunchpadButton[] _Toolbar = new ILaunchpadButton[8];
+        private readonly ILaunchpadButton[] _Side = new ILaunchpadButton[8];
+        private readonly ILaunchpadButton[,] _Grid = new ILaunchpadButton[8, 8];
 
-        public LaunchpadButton[] ToolbarButtons { get => _Toolbar; }
-        public LaunchpadButton[] SidebarButtons { get => _Side; }
+        public ILaunchpadButton[] ToolbarButtons { get => _Toolbar; }
+        public ILaunchpadButton[] SidebarButtons { get => _Side; }
 
         public event EventHandler<ButtonPressEventArgs> ButtonPressed;
 
@@ -46,8 +46,8 @@ namespace Launchpad.Devices
             if (_InputDevice != null)
             {
                 _InputDevice.StartReceiving(new Clock(120));
-                _InputDevice.NoteOn += mInputDevice_NoteOn;
-                _InputDevice.ControlChange += mInputDevice_ControlChange;
+                _InputDevice.NoteOn += InputDevice_NoteOn;
+                _InputDevice.ControlChange += InputDevice_ControlChange;
             }
 
             if (_OutputDevice != null)
@@ -91,13 +91,16 @@ namespace Launchpad.Devices
 
         public void Reset()
         {
+            if (!DeviceAttached)
+                return;
+
             _OutputDevice.SendControlChange(Channel.Channel1, (Control)0, 0);
             Buttons.ToList().ForEach(x => x.RedBrightness = x.GreenBrightness = ButtonBrightness.Off);
         }
 
-        private void mInputDevice_NoteOn(NoteOnMessage msg)
+        private void InputDevice_NoteOn(NoteOnMessage msg)
         {
-            LaunchpadButton button = GetButton(msg.Pitch);
+            var button = GetButton(msg.Pitch);
             if (button == null)
                 return;
 
@@ -112,11 +115,11 @@ namespace Launchpad.Devices
             }
         }
 
-        private void mInputDevice_ControlChange(ControlChangeMessage msg)
+        private void InputDevice_ControlChange(ControlChangeMessage msg)
         {
             ToolbarButton toolbarButton = (ToolbarButton)((int)msg.Control - 104);
 
-            LaunchpadButton button = GetButton(toolbarButton);
+            var button = GetButton(toolbarButton);
             if (button == null)
                 return;
 
@@ -127,17 +130,17 @@ namespace Launchpad.Devices
             }
         }
 
-        public LaunchpadButton GetButton(ToolbarButton toolbarButton)
+        public ILaunchpadButton GetButton(ToolbarButton toolbarButton)
         {
             return _Toolbar[(int)toolbarButton];
         }
 
-        public LaunchpadButton GetButton(SideButton sideButton)
+        public ILaunchpadButton GetButton(SideButton sideButton)
         {
             return _Side[(int)sideButton];
         }
 
-        private LaunchpadButton GetButton(Pitch pitch)
+        private ILaunchpadButton GetButton(Pitch pitch)
         {
             int x = (int)pitch % 16;
             int y = (int)pitch / 16;
@@ -161,12 +164,12 @@ namespace Launchpad.Devices
             }
         }
 
-        public LaunchpadButton this[int x, int y]
+        public ILaunchpadButton this[int x, int y]
         {
             get { return _Grid[x, y]; }
         }
 
-        public IEnumerable<LaunchpadButton> Buttons
+        public IEnumerable<ILaunchpadButton> Buttons
         {
             get
             {
@@ -176,7 +179,7 @@ namespace Launchpad.Devices
             }
         }
 
-        internal OutputDevice OutputDevice
+        public OutputDevice OutputDevice
         {
             get { return _OutputDevice; }
         }
