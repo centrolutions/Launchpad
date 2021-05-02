@@ -1,14 +1,18 @@
-﻿using Midi;
+﻿using Midi.Devices;
+using Midi.Enums;
+using Midi.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Usb.Events;
 
 namespace Launchpad.Devices
 {
     public class LaunchpadDevice : ILaunchpadDevice
     {
-        private InputDevice _InputDevice;
-        private OutputDevice _OutputDevice;
+        private IInputDevice _InputDevice;
+        private IOutputDevice _OutputDevice;
+        private readonly IUsbEventWatcher _UsbEventWatcher;
 
         private bool _DoubleBuffered;
         private bool _DoubleBufferedState;
@@ -21,6 +25,9 @@ namespace Launchpad.Devices
         public ILaunchpadButton[] SidebarButtons { get => _Side; }
 
         public event EventHandler<ButtonPressEventArgs> ButtonPressed;
+        public event EventHandler<DeviceAttachedChangedEventArgs> DeviceAttachedChanged;
+
+        private readonly int _Index;
 
         public bool DeviceAttached
         {
@@ -31,17 +38,25 @@ namespace Launchpad.Devices
 
         public LaunchpadDevice(int index)
         {
+            _Index = index;
             InitialiseButtons();
 
+            _UsbEventWatcher = new UsbEventWatcher();
+            _UsbEventWatcher.UsbDeviceAdded += UsbEventWatcher_UsbDeviceAdded;
+            _UsbEventWatcher.UsbDeviceRemoved += UsbEventWatcher_UsbDeviceRemoved;
+
+            SetupInputDevice(index);
+            SetupOutputDevice(index);
+        }
+
+        private void SetupInputDevice(int index)
+        {
             int i = 0;
-            _InputDevice = InputDevice.InstalledDevices.Where(x => x.Name.Contains("Launchpad")).
-                FirstOrDefault(x => i++ == index);
-            i = 0;
-            _OutputDevice = OutputDevice.InstalledDevices.Where(x => x.Name.Contains("Launchpad")).
-                FirstOrDefault(x => i++ == index);
+            _InputDevice = DeviceManager.InputDevices
+                .Where(x => x.Name.Contains("Launchpad"))
+                .FirstOrDefault(x => i++ == index);
 
             _InputDevice?.Open();
-            _OutputDevice?.Open();
 
             if (_InputDevice != null)
             {
@@ -49,9 +64,80 @@ namespace Launchpad.Devices
                 _InputDevice.NoteOn += InputDevice_NoteOn;
                 _InputDevice.ControlChange += InputDevice_ControlChange;
             }
+        }
+
+        private void TearDownInputDevice()
+        {
+            if (_InputDevice == null)
+                return;
+
+            _InputDevice.NoteOn -= InputDevice_NoteOn;
+            _InputDevice.ControlChange -= InputDevice_ControlChange;
+
+            _InputDevice.Close();
+            _InputDevice = null;
+        }
+
+        private void SetupOutputDevice(int index)
+        {
+            var i = 0;
+            _OutputDevice = DeviceManager.OutputDevices
+                .Where(x => x.Name.Contains("Launchpad"))
+                .FirstOrDefault(x => i++ == index);
+
+            _OutputDevice?.Open();
 
             if (_OutputDevice != null)
                 Reset();
+        }
+
+        private void TearDownOutputDevice()
+        {
+            if (_OutputDevice == null)
+                return;
+
+            TurnAllButtonsOff();
+            _OutputDevice.Close();
+            _OutputDevice = null;
+        }
+
+        private void UsbEventWatcher_UsbDeviceRemoved(object sender, UsbDevice e)
+        {
+            DeviceManager.UpdateInputDevices();
+            DeviceManager.UpdateOutputDevices();
+
+            var inputWasNull = _InputDevice == null;
+            var outputWasNull = _OutputDevice == null;
+
+            if (!DeviceManager.InputDevices.Where(x => x.Name.Contains("Launchpad")).Any())
+                TearDownInputDevice();
+            if (!DeviceManager.OutputDevices.Where(x => x.Name.Contains("Launchpad")).Any())
+                TearDownOutputDevice();
+
+            if ((!inputWasNull && _InputDevice == null) || (!outputWasNull && _OutputDevice == null))
+                OnDeviceAttachedChanged(true, false);
+        }
+
+        private void OnDeviceAttachedChanged(bool wasConnected, bool isConnected)
+        {
+            DeviceAttachedChanged?.Invoke(this, new DeviceAttachedChangedEventArgs(wasConnected, isConnected));
+        }
+
+        private void UsbEventWatcher_UsbDeviceAdded(object sender, UsbDevice e)
+        {
+            DeviceManager.UpdateInputDevices();
+            DeviceManager.UpdateOutputDevices();
+
+            var inputWasNull = _InputDevice == null;
+            var outputWasNull = _OutputDevice == null;
+
+            if (DeviceManager.InputDevices.Where(x => x.Name.Contains("Launchpad")).Any())
+                SetupInputDevice(_Index);
+            if (DeviceManager.OutputDevices.Where(x => x.Name.Contains("Launchpad")).Any())
+                SetupOutputDevice(_Index);
+
+            if ((inputWasNull && _InputDevice != null) || (outputWasNull && _OutputDevice != null))
+                OnDeviceAttachedChanged(false, true);
         }
 
         private void InitialiseButtons()
@@ -95,7 +181,14 @@ namespace Launchpad.Devices
                 return;
 
             _OutputDevice.SendControlChange(Channel.Channel1, (Control)0, 0);
+            TurnAllButtonsOff();
+        }
+
+        private void TurnAllButtonsOff()
+        {
             Buttons.ToList().ForEach(x => x.RedBrightness = x.GreenBrightness = ButtonBrightness.Off);
+            _Side.ToList().ForEach(x => x.RedBrightness = x.GreenBrightness = ButtonBrightness.Off);
+            _Toolbar.ToList().ForEach(x => x.RedBrightness = x.GreenBrightness = ButtonBrightness.Off);
         }
 
         private void InputDevice_NoteOn(NoteOnMessage msg)
@@ -179,7 +272,7 @@ namespace Launchpad.Devices
             }
         }
 
-        public OutputDevice OutputDevice
+        public IOutputDevice OutputDevice
         {
             get { return _OutputDevice; }
         }

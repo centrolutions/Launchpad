@@ -1,4 +1,5 @@
 ﻿using Midi;
+using Midi.Devices;
 using System;
 using System.Collections.Generic;
 
@@ -11,9 +12,10 @@ namespace Launchpad.Devices
         IEnumerable<ILaunchpadButton> Buttons { get; }
         bool DoubleBuffered { get; set; }
         bool DeviceAttached { get; }
-        OutputDevice OutputDevice { get; }
+        IOutputDevice OutputDevice { get; }
 
         event EventHandler<ButtonPressEventArgs> ButtonPressed;
+        event EventHandler<DeviceAttachedChangedEventArgs> DeviceAttachedChanged;
 
         ILaunchpadButton GetButton(SideButton sideButton);
         ILaunchpadButton GetButton(ToolbarButton toolbarButton);

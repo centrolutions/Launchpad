@@ -28,6 +28,13 @@ namespace Launchpad.ViewModels
         public RelayCommand OpenButtonSettingsFileCommand { get; }
         public RelayCommand SaveButtonSettingsFileCommand { get; }
 
+        public bool _IsDeviceAttached;
+        public bool IsDeviceAttached
+        {
+            get => _IsDeviceAttached;
+            set => SetProperty(ref _IsDeviceAttached, value);
+        }
+
         public LaunchpadSettingsViewModel(ILaunchpadDevice launchpad, IDialogService dialogService, IButtonSettingsStore buttonSettings)
         {
             _Launchpad = launchpad;
@@ -46,7 +53,9 @@ namespace Launchpad.ViewModels
             SaveButtonSettingsFileCommand = new RelayCommand(SaveButtonSettingsFile);
 
             SetButtonColors();
+            IsDeviceAttached = _Launchpad.DeviceAttached;
             _Launchpad.ButtonPressed += Launchpad_ButtonPressed;
+            _Launchpad.DeviceAttachedChanged += Launchpad_DeviceAttachedChanged;
         }
 
         private void SaveButtonSettingsFile()
@@ -225,6 +234,12 @@ namespace Launchpad.ViewModels
                 return;
 
             setting.ActionWhenPressed.Execute();
+        }
+
+        private void Launchpad_DeviceAttachedChanged(object sender, DeviceAttachedChangedEventArgs e)
+        {
+            IsDeviceAttached = e.NewValue;
+            SetButtonColors();
         }
     }
 }

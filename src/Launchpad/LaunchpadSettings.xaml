@@ -9,11 +9,12 @@
         DataContext="{Binding Path=LaunchpadSettings, Source={StaticResource ViewModelLocator}}"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="Launchpad Settings" Height="600" Width="600" ResizeMode="CanMinimize" Icon="Launchpad.ico">
+        Title="Launchpad Settings" Height="624" Width="600" ResizeMode="CanMinimize" Icon="Launchpad.ico">
     <Window.Resources>
         <ResourceDictionary>
             <conv:ButtonColorConverter x:Key="ButtonColorConv" />
-            
+            <conv:BoolRedGreenConverter x:Key="BoolRedGreenConv" />
+
             <Style x:Key="Round" TargetType="{x:Type Button}">
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -136,6 +137,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="_File">
@@ -275,5 +277,24 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
+
+        <StatusBar Grid.Row="2">
+            <StatusBarItem MaxHeight="24">
+                <Viewbox>
+                    <Grid>
+                        <Path Data="M29.600034,5.2000192L27.200008,6.2999962 27.90002,7.7999981 30.300047,6.7000211z M21.200002,2.0000029L25.900018,11.899979 16.500015,16.30001C14.300002,17.300011,11.700023,16.80001,10.100015,15.00002L10.000009,15.00002 1.2999892,19.100001 0,16.399985 8.7000206,12.300004 8.7000206,12.200028C8.4000023,9.8999765,9.6000154,7.5000098,11.799999,6.5000084z M27.90002,1.5999779L25.499994,2.7000161 26.200006,4.2000177 28.600033,3.0999799z M28.40002,0L32,7.5999854 27.499996,9.7000254 23.900017,2.0999785z" Stretch="Uniform" Fill="{Binding IsDeviceAttached, Converter={StaticResource BoolRedGreenConv}}" Width="32" Height="32" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="0" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+                </Viewbox>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

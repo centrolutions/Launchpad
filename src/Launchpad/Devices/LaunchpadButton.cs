@@ -1,4 +1,4 @@
-﻿using Midi;
+﻿using Midi.Enums;
 
 namespace Launchpad.Devices
 {
