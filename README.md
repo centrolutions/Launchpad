@@ -4,13 +4,13 @@ A utility that allows the Ableton / Novation Launchpad Mini to be used as a macr
 Features include:
 - Set any button to red, green, or orange
 - The program closes / minimizes to the system tray to stay running in the background
-- Make any button play a sound, run a program, or type anything into any program (like macros or key bindings)
+- Make any button play a sound, run a program, change a scene in OBS, or type anything into any program (like macros or key bindings)
 - Button settings are automatically saved
 - Save different sets of button setups to a file that can be loaded later
 - Reset all your buttons back to blank / default
 
 Upcoming features:
-- Communicate with OBS to switch scenes and start / pause recording and streaming
+- Communicate with OBS to start / pause recording and streaming
 - Set any button to play any MIDI sound
 
 A note about compatibility:
