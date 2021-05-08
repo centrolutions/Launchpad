@@ -1,0 +1,34 @@
+﻿<Window x:Class="Launchpad.ObsSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Launchpad"
+        mc:Ignorable="d"
+        DataContext="{Binding Path=ObsSettings, Source={StaticResource ViewModelLocator}}"
+        Title="OBS Settings" Height="300" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Webservice Address:" Margin="5,10,5,10" />
+            <TextBox Grid.Column="1" Margin="5,10,5,10" Text="{Binding ObsAddress, Mode=TwoWay}" />
+
+            <TextBlock Grid.Row="1" Text="Password:" Margin="5,10,5,10" />
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="5,10,5,10" Text="{Binding ObsPassword, Mode=TwoWay}" />
+
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="5,10,5,10">
+                <Button Content="OK" x:Name="OkButton" MinWidth="100" Click="OkButton_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

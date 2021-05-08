@@ -17,6 +17,15 @@ namespace Launchpad.Services
             return result;
         }
 
+        public bool? ShowObsSettingsDialog()
+        {
+            var window = new ObsSettings();
+            window.Owner = App.Current.MainWindow;
+            var result = window.ShowDialog();
+
+            return result;
+        }
+
         public bool ShowYesNoDialog(string question, string questionTitle)
         {
             var result = MessageBox.Show(App.Current.MainWindow, question, questionTitle, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No, MessageBoxOptions.None);

@@ -9,7 +9,7 @@
         xmlns:act="clr-namespace:Launchpad.Actions"
         DataContext="{Binding Path=ButtonSettings, Source={StaticResource ViewModelLocator}}"
         mc:Ignorable="d"
-        Title="ButtonSettings" Height="250" Width="320" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Button Settings" Height="250" Width="320" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <ResourceDictionary>
             <conv:BoolToColorConverter x:Key="boolToColor" />
@@ -33,6 +33,16 @@
                     </StackPanel>
                 </StackPanel>
             </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type act:ObsChangeSceneAction}">
+                <StackPanel Margin="5,10,5,10">
+                    <TextBlock Text="Scene Name" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding SceneName, Mode=TwoWay}" MinWidth="250" MaxWidth="250" />
+                        <Button Content="..." MinWidth="40" Command="{Binding ShowObsSettingsCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
 
             <DataTemplate DataType="{x:Type act:KeyboardMacroAction}">
                 <StackPanel Margin="5,10,5,10">
@@ -43,6 +53,7 @@
                     </TextBlock>
                 </StackPanel>
             </DataTemplate>
+
         </ResourceDictionary>
     </Window.Resources>
     <Grid>

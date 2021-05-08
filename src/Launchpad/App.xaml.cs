@@ -1,10 +1,12 @@
 ﻿using Launchpad.Actions;
 using Launchpad.Devices;
 using Launchpad.Models;
+using Launchpad.Properties;
 using Launchpad.Services;
 using Launchpad.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using System.Configuration;
 using System.Windows;
 
 namespace Launchpad
@@ -26,8 +28,10 @@ namespace Launchpad
                     .AddSingleton<IDialogService, DialogService>()
                     .AddSingleton<IButtonSettingsStore, ButtonSettingsStore>()
                     .AddSingleton<IActionFactory, ActionFactory>()
+                    .AddSingleton<ApplicationSettingsBase, Settings>()
                     .AddSingleton<LaunchpadSettingsViewModel>()
                     .AddTransient<ButtonSettingsViewModel>()
+                    .AddSingleton<ObsSettingsViewModel>()
                     .BuildServiceProvider()
                 );
             ;

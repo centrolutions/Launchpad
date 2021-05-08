@@ -374,6 +374,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -398,6 +406,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -1073,15 +1089,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Launchpad"
-        "ProductCode" = "8:{7891509A-0C27-445B-A2E3-B8B0515407FA}"
-        "PackageCode" = "8:{8C60B61F-D8DC-411C-9075-D8CD9BEEA675}"
+        "ProductCode" = "8:{CAAB2DE3-3B2E-41AF-91D7-BABB9D597DFC}"
+        "PackageCode" = "8:{F528F5CE-F80C-4EE0-B2D0-506FBEEBA08E}"
         "UpgradeCode" = "8:{FADE50E3-6DC0-4593-A437-E92CE045AA6D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.0"
+        "ProductVersion" = "8:1.2.0"
         "Manufacturer" = "8:Jason Williams"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1637,7 +1653,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_36DF3984C0994FD8989B5C6D0DE36959"
             {
-            "SourcePath" = "8:..\\Launchpad\\obj\\Debug\\Launchpad.exe"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_54DFFCAC36BF460ABEC93D94C905AB5E"

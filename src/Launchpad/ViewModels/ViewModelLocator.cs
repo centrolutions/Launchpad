@@ -19,5 +19,13 @@ namespace Launchpad.ViewModels
                 return Ioc.Default.GetService<ButtonSettingsViewModel>();
             }
         }
+
+        public ObsSettingsViewModel ObsSettings
+        {
+            get
+            {
+                return Ioc.Default.GetService<ObsSettingsViewModel>();
+            }
+        }
     }
 }

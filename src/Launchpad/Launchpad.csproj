@@ -56,6 +56,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="obs-websocket-dotnet, Version=4.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\obs-websocket-dotnet.4.9.0\lib\netstandard2.0\obs-websocket-dotnet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -93,6 +96,9 @@
     <Reference Include="Usb.Events, Version=1.1.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Usb.Events.1.1.1.1\lib\netstandard2.0\Usb.Events.dll</HintPath>
     </Reference>
+    <Reference Include="websocket-sharp, Version=1.0.1.0, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp-netstandard.1.0.1\lib\net45\websocket-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -107,6 +113,8 @@
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="Actions\IActionFactory.cs" />
     <Compile Include="Actions\KeyboardMacroAction.cs" />
+    <Compile Include="Actions\ObsAction.cs" />
+    <Compile Include="Actions\ObsChangeSceneAction.cs" />
     <Compile Include="Actions\PlaySoundAction.cs" />
     <Compile Include="Actions\RunProgramAction.cs" />
     <Compile Include="ButtonSettings.xaml.cs">
@@ -127,10 +135,14 @@
     <Compile Include="Models\IButtonSettingsStore.cs" />
     <Compile Include="Models\UISidebarButton.cs" />
     <Compile Include="Models\UIToolbarButton.cs" />
+    <Compile Include="ObsSettings.xaml.cs">
+      <DependentUpon>ObsSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="ViewModels\ButtonSettingsViewModel.cs" />
     <Compile Include="ViewModels\LaunchpadSettingsViewModel.cs" />
+    <Compile Include="ViewModels\ObsSettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Page Include="ButtonSettings.xaml">
       <SubType>Designer</SubType>
@@ -149,6 +161,10 @@
     <Compile Include="Devices\LaunchpadButton.cs" />
     <Compile Include="Devices\LaunchpadDevice.cs" />
     <Compile Include="Devices\LaunchpadException.cs" />
+    <Page Include="ObsSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
